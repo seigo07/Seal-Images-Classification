@@ -12,29 +12,29 @@ from sklearn.svm import LinearSVC
 
 # Loading the binary data
 def load_data():
-    # print('Loading binary class data in note...')
+    print('Loading binary class data in note...')
     X_train_df = pd.read_csv("binary/X_train.csv", header=None)
-    # X_train_df.info()
+    X_train_df.info()
 
     y_train_df = pd.read_csv("binary/Y_train.csv", header=None)
-    # print('Unique values', y_train_df.iloc[:, 0].unique())
+    print('Unique values', y_train_df.iloc[:, 0].unique())
 
     X_test_df = pd.read_csv("binary/X_test.csv", header=None)
-    # X_test_df.info()
+    X_test_df.info()
 
     data_dict = {
         'X_train': X_train_df,
         'X_test': X_test_df,
         'y_train': y_train_df
     }
-    # print('\n')
+    print('\n')
 
     return data_dict
 
 
 # Cleaning the data by removing the features taken from a random normal distribution
 def clean_data(data_dict):
-    # print('Cleaning data...')
+    print('Cleaning data...')
     X_train_df = data_dict['X_train']
     X_test_df = data_dict['X_test']
     y_train_df = data_dict['y_train']
@@ -44,16 +44,16 @@ def clean_data(data_dict):
     # df.columns is zero-based pd.Index
     X_test_df = X_test_df.drop(X_test_df.columns[900:916], axis=1)
 
-    # print('X train after cleaning:')
+    print('X train after cleaning:')
     X_train_df.info()
-    # print('X_test after cleaning')
+    print('X_test after cleaning')
     X_test_df.info()
     data_dict = {
         'X_train': X_train_df,
         'X_test': X_test_df,
         'y_train': y_train_df
     }
-    # print('\n')
+    print('\n')
     return data_dict
 
 
@@ -61,9 +61,9 @@ def clean_data(data_dict):
 def plot_target_frequency(data_dict):
     y_train = data_dict['y_train']
     y_train.columns = ['label']
-    # print(y_train.columns)
+    print(y_train.columns)
     total = float(len(y_train))
-    # print('total', total)
+    print('total', total)
     plot = sns.countplot(x='label', data=y_train)
     for p in plot.patches:
         height = p.get_height()
@@ -71,7 +71,7 @@ def plot_target_frequency(data_dict):
                   height + 3,
                   '{:1.3f}'.format(height / total),
                   ha="center")
-    # plt.show()
+    plt.show()
 
 
 # Defining the estimator as well as the grid search for training KNN.
@@ -87,8 +87,8 @@ def kn_cross_validate_pca(X_train, y_train, scorer):
         'cf__p': [2]
     }
 
-    # print('Grid: ', params)
-    # print('Scorer: ', scorer)
+    print('Grid: ', params)
+    print('Scorer: ', scorer)
 
     cf = GridSearchCV(pipeline, params, cv=kf, n_jobs=-1, scoring=scorer, refit=scorer[0])
 
@@ -96,21 +96,21 @@ def kn_cross_validate_pca(X_train, y_train, scorer):
     cf.fit(X_train, y_train)
     end = time.time()
 
-    # print('K-nearest neighbors cross-val time elapsed: ', end - start)
-    # print('Best params: ', cf.best_params_)
-    # print('PCA number of components', cf.best_estimator_.named_steps['pca'].n_components_)
+    print('K-nearest neighbors cross-val time elapsed: ', end - start)
+    print('Best params: ', cf.best_params_)
+    print('PCA number of components', cf.best_estimator_.named_steps['pca'].n_components_)
 
     balanced_acc_score = cf.best_score_ * 100
 
     acc_score = cf.cv_results_['mean_test_accuracy'][cf.best_index_] * 100
 
-    # print("Best cross-val balanced accuracy score: " + str(round(balanced_acc_score, 2)) + '%')
-    # print("Best cross-val accuracy score: " + str(round(acc_score, 2)) + '%')
+    print("Best cross-val balanced accuracy score: " + str(round(balanced_acc_score, 2)) + '%')
+    print("Best cross-val accuracy score: " + str(round(acc_score, 2)) + '%')
 
     cv_results = pd.DataFrame(cf.cv_results_)
     # display(cv_results)
 
-    # print('\n')
+    print('\n')
     return cf.best_estimator_
 
 
@@ -128,8 +128,8 @@ def rf_cross_validate_pca(X_train, y_train, scorer):
         'cf__min_samples_split': [2],
     }
 
-    # print('Grid: ', params)
-    # print('Scorer: ', scorer)
+    print('Grid: ', params)
+    print('Scorer: ', scorer)
 
     cf = GridSearchCV(pipeline, params, cv=kf, n_jobs=-1, scoring=scorer, refit=scorer[0])
 
@@ -137,21 +137,21 @@ def rf_cross_validate_pca(X_train, y_train, scorer):
     cf.fit(X_train, y_train)
     end = time.time()
 
-    # print('Random Forest cross-val time elapsed: ', end - start)
-    # print('Best params: ', cf.best_params_)
-    # print('PCA number of components', cf.best_estimator_.named_steps['pca'].n_components_)
+    print('Random Forest cross-val time elapsed: ', end - start)
+    print('Best params: ', cf.best_params_)
+    print('PCA number of components', cf.best_estimator_.named_steps['pca'].n_components_)
 
     balanced_acc_score = cf.best_score_ * 100
 
     acc_score = cf.cv_results_['mean_test_accuracy'][cf.best_index_] * 100
 
-    # print("Best cross-val balanced accuracy score: " + str(round(balanced_acc_score, 2)) + '%')
-    # print("Best cross-val accuracy score: " + str(round(acc_score, 2)) + '%')
+    print("Best cross-val balanced accuracy score: " + str(round(balanced_acc_score, 2)) + '%')
+    print("Best cross-val accuracy score: " + str(round(acc_score, 2)) + '%')
 
     cv_results = pd.DataFrame(cf.cv_results_)
     # display(cv_results)
 
-    # print('\n')
+    print('\n')
     return cf.best_estimator_
 
 
@@ -167,8 +167,8 @@ def svc_cross_validate_pca(X_train, y_train, scorer):
         'cf__dual': [False],
     }
 
-    # print('Grid: ', params)
-    # print('Scorer: ', scorer)
+    print('Grid: ', params)
+    print('Scorer: ', scorer)
 
     cf = GridSearchCV(pipeline, params, cv=kf, n_jobs=-1, scoring=scorer, refit=scorer[0])
 
@@ -176,20 +176,20 @@ def svc_cross_validate_pca(X_train, y_train, scorer):
     cf.fit(X_train, y_train)
     end = time.time()
 
-    # print('SVC cross-val time elapsed: ', end - start)
-    # print('Best params: ', cf.best_params_)
-    # print('PCA number of components', cf.best_estimator_.named_steps['pca'].n_components_)
+    print('SVC cross-val time elapsed: ', end - start)
+    print('Best params: ', cf.best_params_)
+    print('PCA number of components', cf.best_estimator_.named_steps['pca'].n_components_)
 
     balanced_acc_score = cf.best_score_ * 100
     acc_score = cf.cv_results_['mean_test_accuracy'][cf.best_index_] * 100
 
-    # print("Best cross-val balanced accuracy score: " + str(round(balanced_acc_score, 2)) + '%')
-    # print("Best cross-val accuracy score: " + str(round(acc_score, 2)) + '%')
+    print("Best cross-val balanced accuracy score: " + str(round(balanced_acc_score, 2)) + '%')
+    print("Best cross-val accuracy score: " + str(round(acc_score, 2)) + '%')
 
     cv_results = pd.DataFrame(cf.cv_results_)
     # display(cv_results)
 
-    # print('\n')
+    print('\n')
     return cf.best_estimator_
 
 

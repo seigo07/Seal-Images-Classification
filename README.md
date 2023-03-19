@@ -17,5 +17,6 @@ This is a classification sample application by logistic regression.
 * Please run the following command
 ```
 cd Classification-Seal-Images
-python p2.py
+python3 p2_binary.py
+python3 p2_multi.py
 ```
