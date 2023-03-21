@@ -12,7 +12,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import LinearSVC
 
 
-# Loading the binary data
+# Loading data
 def load_data():
     print('Loading data...')
 
@@ -43,18 +43,17 @@ def clean_data(data_dict):
     return df
 
 
-# Visualising the target frequencies to see whether the dataset is imbalanced.
+# Visualising the target frequencies to check the imbalance of data.
 def plot_target_frequency(df):
     df['y_train'].columns = ['label']
     print(df['y_train'].columns)
-    total = float(len(df['y_train']))
-    print('total', total)
+    y_train_size = float(len(df['y_train']))
+    print('y_train_size: ', y_train_size)
     plot = sns.countplot(x='label', data=df['y_train'])
-    for p in plot.patches:
-        height = p.get_height()
-        plot.text(p.get_x() + p.get_width() / 2.,
-                  height + 3,
-                  '{:1.3f}'.format(height / total),
+    for patch in plot.patches:
+        plot.text(patch.get_x() + patch.get_width() / 2.,
+                  patch.get_height() + 3,
+                  '{:1.3f}'.format(patch.get_height() / y_train_size),
                   ha="center")
     plt.show()
 
