@@ -31,26 +31,16 @@ def load_data():
 # Cleaning the data by removing the features taken from a random normal distribution
 def clean_data(data_dict):
     print('Cleaning data...')
-    X_train_df = data_dict['X_train']
-    X_test_df = data_dict['X_test']
-    y_train_df = data_dict['y_train']
-
-    # df.columns is zero-based pd.Index
-    X_train_df = X_train_df.drop(X_train_df.columns[900:916], axis=1)
-    # df.columns is zero-based pd.Index
-    X_test_df = X_test_df.drop(X_test_df.columns[900:916], axis=1)
-
-    print('X train after cleaning:')
-    X_train_df.info()
-    print('X_test after cleaning')
-    X_test_df.info()
-    data_dict = {
-        'X_train': X_train_df,
-        'X_test': X_test_df,
-        'y_train': y_train_df
+    df = {
+        'X_train': data_dict['X_train'].drop(data_dict['X_train'].columns[900:916], axis=1),
+        'X_test': data_dict['X_test'].drop(data_dict['X_test'].columns[900:916], axis=1),
+        'y_train': data_dict['y_train']
     }
-    print('\n')
-    return data_dict
+    print('X train after cleaning:')
+    df['X_train'].info()
+    print('X_test after cleaning')
+    df['X_test'].info()
+    return df
 
 
 # Visualising the target frequencies to see whether the dataset is imbalanced.
