@@ -1,6 +1,8 @@
 import pandas as pd
 import seaborn as sns
 import time
+
+from matplotlib import pyplot as plt
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
@@ -13,23 +15,18 @@ from sklearn.svm import LinearSVC
 # Loading the binary data
 def load_data():
     print('Loading binary class data in note...')
-    X_train_df = pd.read_csv("binary/X_train.csv", header=None)
-    X_train_df.info()
+    X_train = pd.read_csv("binary/X_train.csv", header=None)
+    X_train.info()
 
-    y_train_df = pd.read_csv("binary/Y_train.csv", header=None)
-    print('Unique values', y_train_df.iloc[:, 0].unique())
+    y_train = pd.read_csv("binary/Y_train.csv", header=None)
+    print('Unique values', y_train.iloc[:, 0].unique())
 
-    X_test_df = pd.read_csv("binary/X_test.csv", header=None)
-    X_test_df.info()
+    X_test = pd.read_csv("binary/X_test.csv", header=None)
+    X_test.info()
 
-    data_dict = {
-        'X_train': X_train_df,
-        'X_test': X_test_df,
-        'y_train': y_train_df
-    }
-    print('\n')
+    df = {'X_train': X_train, 'X_test': X_test, 'y_train': y_train}
 
-    return data_dict
+    return df
 
 
 # Cleaning the data by removing the features taken from a random normal distribution
@@ -191,5 +188,3 @@ def svc_cross_validate_pca(X_train, y_train, scorer):
 
     print('\n')
     return cf.best_estimator_
-
-
