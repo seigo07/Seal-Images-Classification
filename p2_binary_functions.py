@@ -15,16 +15,15 @@ from sklearn.svm import LinearSVC
 # Loading the binary data
 def load_data():
     print('Loading binary class data in note...')
-    X_train = pd.read_csv("binary/X_train.csv", header=None)
-    X_train.info()
 
-    y_train = pd.read_csv("binary/Y_train.csv", header=None)
-    print('Unique values', y_train.iloc[:, 0].unique())
-
-    X_test = pd.read_csv("binary/X_test.csv", header=None)
-    X_test.info()
-
-    df = {'X_train': X_train, 'X_test': X_test, 'y_train': y_train}
+    df = {
+        'X_train': pd.read_csv("binary/X_train.csv", header=None),
+        'y_train': pd.read_csv("binary/Y_train.csv", header=None),
+        'X_test': pd.read_csv("binary/X_test.csv", header=None)
+    }
+    df['X_train'].info()
+    print('Unique values', df['y_train'].iloc[:, 0].unique())
+    df['X_test'].info()
 
     return df
 
