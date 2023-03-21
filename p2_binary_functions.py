@@ -14,7 +14,7 @@ from sklearn.svm import LinearSVC
 
 # Loading the binary data
 def load_data():
-    print('Loading binary class data in note...')
+    print('Loading data...')
 
     df = {
         'X_train': pd.read_csv("binary/X_train.csv", header=None),
@@ -44,13 +44,12 @@ def clean_data(data_dict):
 
 
 # Visualising the target frequencies to see whether the dataset is imbalanced.
-def plot_target_frequency(data_dict):
-    y_train = data_dict['y_train']
-    y_train.columns = ['label']
-    print(y_train.columns)
-    total = float(len(y_train))
+def plot_target_frequency(df):
+    df['y_train'].columns = ['label']
+    print(df['y_train'].columns)
+    total = float(len(df['y_train']))
     print('total', total)
-    plot = sns.countplot(x='label', data=y_train)
+    plot = sns.countplot(x='label', data=df['y_train'])
     for p in plot.patches:
         height = p.get_height()
         plot.text(p.get_x() + p.get_width() / 2.,
