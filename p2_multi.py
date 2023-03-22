@@ -71,43 +71,29 @@ print(cr_under)
 
 # 6. Selecting and training another classification model
 
-rf_cf = rf_cross_validate_pca(X_train, y_train, scorer)
+# Using cross-validation and predicting the performance of Random Forest.
 
-# Making predictions on the validation set with RF by using the RF classifier
-# to make predictions on the validation set to allow us to evaluate its performance.
-
-y_pred = rf_cf.predict(X_test)
-
-# The confusion matrix for RF which will tell us how each class was misclassified.
-
+rf = rf_cross_validation(X_train, y_train, scorer)
+y_pred = rf.predict(X_test)
 cm = confusion_matrix(y_test, y_pred)
 sns.heatmap(cm / np.sum(cm), annot=True, fmt='.2%', cmap='Blues')
 
-# The classification report for RF which will give us detailed evaluation metrics.
+# Evaluating the mis-classification of each class the confusion matrix and the classification report.
 
 cr = classification_report(y_test, y_pred)
 print(cr)
-
 print('Balanced accuracy: ', balanced_accuracy_score(y_test, y_pred))
 
-# Training RF with undersampled dataset using the undersampled dataset.
+# Training and evaluating RF with under-sampled data.
 
-rf_cf_under = rf_cross_validate_pca(X_train_under, y_train_under, scorer)
-
-# Making prediction on evaluation set with RF using the RF classifier trained using the undersampled dataset
-# to make predictions on the validation set to allow us to evaluate its performance.
-
-y_pred_under = rf_cf_under.predict(X_test)
-
-# The confusion matrix for RF which will tell us how each class was misclassified.
-
+rf_under = rf_cross_validation(X_train_under, y_train_under, scorer)
+y_pred_under = rf_under.predict(X_test)
 cf_under = confusion_matrix(y_test, y_pred_under)
 sns.heatmap(cf_under / np.sum(cf_under), annot=True, fmt='.2%', cmap='Blues')
-
-# The classification report for RF which will give us detailed evaluation metrics.
-
 cr_under = classification_report(y_test, y_pred_under)
 print(cr_under)
+
+# Using cross-validation and predicting the performance of LinearSVC.
 
 svc_cf = svc_cross_validate_pca(X_train, y_train, scorer)
 
