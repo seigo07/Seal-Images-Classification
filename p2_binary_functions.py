@@ -135,8 +135,8 @@ def rf_cross_validation(X_train, y_train, scorer):
     return gs.best_estimator_
 
 
-# Defining the estimator as well as the grid search. The estimator is a pipeline in which the features are scaled.
-def svc_cross_validate_pca(X_train, y_train, scorer):
+# cross_validation function for LinearSVC.
+def svc_cross_validation(X_train, y_train, scorer):
     kf = KFold(n_splits=N_SPLITS, shuffle=True, random_state=RANDOM_STATE)
     pipeline = Pipeline(
         [('sc', StandardScaler()), ('pca', PCA(n_components=0.99, svd_solver='full')), ('cf', LinearSVC())])
@@ -147,27 +147,26 @@ def svc_cross_validate_pca(X_train, y_train, scorer):
         'cf__dual': [False],
     }
 
-    print('Grid: ', params)
+    print('Params for GridSearchCV: ', params)
     print('Scorer: ', scorer)
 
-    cf = GridSearchCV(pipeline, params, cv=kf, n_jobs=-1, scoring=scorer, refit=scorer[0])
+    gs = GridSearchCV(pipeline, params, cv=kf, n_jobs=-1, scoring=scorer, refit=scorer[0])
 
     start = time.time()
-    cf.fit(X_train, y_train)
+    gs.fit(X_train, y_train)
     end = time.time()
 
-    print('SVC cross-val time elapsed: ', end - start)
-    print('Best params: ', cf.best_params_)
-    print('PCA number of components', cf.best_estimator_.named_steps['pca'].n_components_)
+    print('The time of cross-validation for SVC: ', end - start)
+    print('Best parameters for GridSearchCV: ', gs.best_params_)
+    print('The number of components of PCA', gs.best_estimator_.named_steps['pca'].n_components_)
 
-    balanced_acc_score = cf.best_score_ * 100
-    acc_score = cf.cv_results_['mean_test_accuracy'][cf.best_index_] * 100
+    balanced_acc_score = gs.best_score_ * 100
+    acc_score = gs.cv_results_['mean_test_accuracy'][gs.best_index_] * 100
 
-    print("Best cross-val balanced accuracy score: " + str(round(balanced_acc_score, 2)) + '%')
-    print("Best cross-val accuracy score: " + str(round(acc_score, 2)) + '%')
+    print("Best cross-validation balanced accuracy score: " + str(round(balanced_acc_score, 2)) + '%')
+    print("Best cross-validation accuracy score: " + str(round(acc_score, 2)) + '%')
 
     # cv_results = pd.DataFrame(cf.cv_results_)
     # display(cv_results)
 
-    print('\n')
-    return cf.best_estimator_
+    return gs.best_estimator_

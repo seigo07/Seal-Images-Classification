@@ -93,7 +93,7 @@ print(cr_under)
 
 # 6. Selecting and training another classification model
 
-svc_cf = svc_cross_validate_pca(X_train, y_train, scorer=scorer)
+svc_cf = svc_cross_validation(X_train, y_train, scorer=scorer)
 
 # Making predictions on the validation set with SVC using the SVC classifier
 # to make predictions on the validation set to allow  us to evaluate its performance.
@@ -110,7 +110,7 @@ print('Balanced accuracy: ', balanced_accuracy_score(y_test, y_pred))
 
 # Training SVC with undersampled dataset
 
-svc_cf_under = svc_cross_validate_pca(X_train_under, y_train_under, scorer=scorer)
+svc_cf_under = svc_cross_validation(X_train_under, y_train_under, scorer=scorer)
 
 # Making prediction on evaluation set with SVC under using the SVC classifier trained using the undersampled dataset
 # to make predictions on the validation set to allow  us to evaluate its performance.
