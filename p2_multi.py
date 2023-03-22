@@ -46,7 +46,7 @@ y_train_under = y_train_under.to_numpy().ravel()
 # Using cross-validation and predicting the performance of KNeighborsClassifier.
 
 scorer = ['balanced_accuracy', 'accuracy']
-kn = kn_cross_validate_pca(X_train, y_train, scorer)
+kn = kn_cross_validation(X_train, y_train, scorer)
 y_pred = kn.predict(X_test)
 
 # Evaluating the mis-classification of each class the confusion matrix and the classification report.
@@ -61,7 +61,7 @@ print(balanced_accuracy_score(y_test, y_pred))
 
 # Training and evaluating KNN with under-sampled data.
 
-kn_under = kn_cross_validate_pca(X_train_under, y_train_under, scorer)
+kn_under = kn_cross_validation(X_train_under, y_train_under, scorer)
 y_pred_under = kn_under.predict(X_test)
 cf_under = confusion_matrix(y_test, y_pred_under)
 sns.heatmap(cf_under / np.sum(cf_under), annot=True, fmt='.2%', cmap='Blues')
