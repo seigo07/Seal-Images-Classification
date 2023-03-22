@@ -118,4 +118,4 @@ print(cr_under)
 # Producing the Y_test.csv file which is used to evaluate the final performance of the classifier (SVM classifier).
 
 y_test = svc.predict(df['X_test'])
-np.savetxt("output/Y_test.csv", y_test, fmt="%s")
+np.savetxt("output/binary/Y_test.csv", y_test, fmt="%s")
