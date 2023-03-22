@@ -11,64 +11,50 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import LinearSVC
 
 
-# Loading the binary data
+RANDOM_STATE = 42
+N_SPLITS = 5
+
+# Loading data
 def load_data():
-    # print('Loading multi-class data...')
-    X_train_df = pd.read_csv("multi/X_train.csv", header=None)
-    # X_train_df.info()
-
-    y_train_df = pd.read_csv("multi/Y_train.csv", header=None)
-    # print('Unique values', y_train_df.iloc[:, 0].unique())
-
-    X_test_df = pd.read_csv("multi/X_test.csv", header=None)
-    # X_test_df.info()
-
-    data_dict = {
-        'X_train': X_train_df,
-        'X_test': X_test_df,
-        'y_train': y_train_df
+    print('Loading data...')
+    df = {
+        'X_train': pd.read_csv("multi/X_train.csv", header=None),
+        'y_train': pd.read_csv("multi/Y_train.csv", header=None),
+        'X_test': pd.read_csv("multi/X_test.csv", header=None)
     }
-    # print('\n')
+    df['X_train'].info()
+    print('Unique values', df['y_train'].iloc[:, 0].unique())
+    df['X_test'].info()
 
-    return data_dict
+    return df
 
 
 # Cleaning the data by removing the features taken from a random normal distribution
 def clean_data(data_dict):
     print('Cleaning data...')
-    X_train_df = data_dict['X_train']
-    X_test_df = data_dict['X_test']
-    y_train_df = data_dict['y_train']
-
-    X_train_df = X_train_df.drop(X_train_df.columns[900:916], axis=1)  # df.columns is zero-based pd.Index
-    X_test_df = X_test_df.drop(X_test_df.columns[900:916], axis=1)  # df.columns is zero-based pd.Index
-
-    print('X train after cleaning:')
-    X_train_df.info()
-    print('X_test after cleaning')
-    X_test_df.info()
-    data_dict = {
-        'X_train': X_train_df,
-        'X_test': X_test_df,
-        'y_train': y_train_df
+    df = {
+        'X_train': data_dict['X_train'].drop(data_dict['X_train'].columns[900:916], axis=1),
+        'X_test': data_dict['X_test'].drop(data_dict['X_test'].columns[900:916], axis=1),
+        'y_train': data_dict['y_train']
     }
-    print('\n')
+    print('X train after cleaning:')
+    df['X_train'].info()
+    print('X_test after cleaning')
+    df['X_test'].info()
     return data_dict
 
 
-# Visualising the target frequencies to see whether the dataset is imbalanced.
-def plot_target_frequency(data_dict):
-    y_train = data_dict['y_train']
-    y_train.columns = ['label']
-    print(y_train.columns)
-    total = float(len(y_train))
-    print('total', total)
-    plot = sns.countplot(x='label', data=y_train)
-    for p in plot.patches:
-        height = p.get_height()
-        plot.text(p.get_x() + p.get_width() / 2.,
-                  height + 3,
-                  '{:1.3f}'.format(height / total),
+# Visualising the target frequencies to check the imbalance of data.
+def plot_target_frequency(df):
+    df['y_train'].columns = ['label']
+    print(df['y_train'].columns)
+    y_train_size = float(len(df['y_train']))
+    print('y_train_size: ', y_train_size)
+    plot = sns.countplot(x='label', data=df['y_train'])
+    for patch in plot.patches:
+        plot.text(patch.get_x() + patch.get_width() / 2.,
+                  patch.get_height() + 3,
+                  '{:1.3f}'.format(patch.get_height() / y_train_size),
                   ha="center")
     plt.show()
 

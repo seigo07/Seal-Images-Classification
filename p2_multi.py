@@ -11,22 +11,22 @@ from sklearn.metrics import balanced_accuracy_score
 
 # 1. Loading the data
 
-data_dict = load_data()
+df = load_data()
 
 # 2. Cleaning the data and creating new input features from the given dataset
 
-data_dict = clean_data(data_dict)
+df = clean_data(df)
 
 # 3. Analysing and visualising the data
 
-plot_target_frequency(data_dict)
+plot_target_frequency(df)
 
 # 4. Preparing the inputs and choosing a suitable subset of features
 
 # Splitting the training dataset in order to obtain a mock test set,
 # due to no target labels for the X_test.csv file.
 
-X_train, X_val, y_train, y_val = train_test_split(data_dict['X_train'], data_dict['y_train'], test_size=0.2, random_state=23, shuffle=True, stratify=data_dict['y_train'])
+X_train, X_val, y_train, y_val = train_test_split(df['X_train'], df['y_train'], test_size=0.2, random_state=23, shuffle=True, stratify=df['y_train'])
 
 # Getting the undersampled data for training without undersampling the mock testing set
 # in order to keep the distribution of the classes close to the distribution of the original dataset.
@@ -167,7 +167,7 @@ print(cr_under)
 # Producing the Y_test.csv file which is the file that will be used to evaluate the final performance of the classifier.
 # Decided that will be used for the SVM classifier that was trained on the original dataset after analysing the results.
 
-X_test = data_dict['X_test']
+X_test = df['X_test']
 y_test = svc_cf.predict(X_test)
 print(len(y_test))
 # np.savetxt("output/Y_test.csv", y_test, fmt="%s")
