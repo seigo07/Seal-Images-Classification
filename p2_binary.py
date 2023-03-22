@@ -41,6 +41,8 @@ y_test = y_test.to_numpy().ravel()
 X_train_under = X_train_under.to_numpy()
 y_train_under = y_train_under.to_numpy().ravel()
 
+# 5. Selecting and training a classification model,
+
 # Using cross-validation and predicting the performance of KNeighborsClassifier.
 
 scorer = ['balanced_accuracy', 'accuracy']
@@ -67,7 +69,7 @@ cr_under = classification_report(y_test, y_pred_under)
 print("classification_report: ")
 print(cr_under)
 
-# 5. Selecting and training a classification model,
+# 6. Selecting and training another classification model
 
 # Using cross-validation and predicting the performance of Random Forest.
 
@@ -91,16 +93,12 @@ sns.heatmap(cf_under / np.sum(cf_under), annot=True, fmt='.2%', cmap='Blues')
 cr_under = classification_report(y_test, y_pred_under)
 print(cr_under)
 
-# 6. Selecting and training another classification model
+# Using cross-validation and predicting the performance of LinearSVC.
 
-svc_cf = svc_cross_validation(X_train, y_train, scorer=scorer)
+svc = svc_cross_validation(X_train, y_train, scorer=scorer)
+y_pred = svc.predict(X_test)
 
-# Making predictions on the validation set with SVC using the SVC classifier
-# to make predictions on the validation set to allow  us to evaluate its performance.
-
-y_pred = svc_cf.predict(X_test)
-
-# The confusion matrix for SVC which will tell us how each class was misclassified.
+# Evaluating the mis-classification of each class the confusion matrix and the classification report.
 
 cm = confusion_matrix(y_test, y_pred)
 sns.heatmap(cm / np.sum(cm), annot=True, fmt='.2%', cmap='Blues')
@@ -108,27 +106,16 @@ cr = classification_report(y_test, y_pred)
 print(cr)
 print('Balanced accuracy: ', balanced_accuracy_score(y_test, y_pred))
 
-# Training SVC with undersampled dataset
+# Training and evaluating SVC with under-sampled data.
 
-svc_cf_under = svc_cross_validation(X_train_under, y_train_under, scorer=scorer)
-
-# Making prediction on evaluation set with SVC under using the SVC classifier trained using the undersampled dataset
-# to make predictions on the validation set to allow  us to evaluate its performance.
-
-y_pred_under = svc_cf_under.predict(X_test)
-
-# The confusion matrix for SVC which will tell us how each class was misclassified.
-
+svc_under = svc_cross_validation(X_train_under, y_train_under, scorer=scorer)
+y_pred_under = svc_under.predict(X_test)
 cf_under = confusion_matrix(y_test, y_pred_under)
 sns.heatmap(cf_under / np.sum(cf_under), annot=True, fmt='.2%', cmap='Blues')
-
-# The classification report for SVC which will give us detailed evaluation metrics.
-
 cr_under = classification_report(y_test, y_pred_under)
 print(cr_under)
 
-# Producing the Y_test.csv file which is the file that will be used to evaluate the final performance of the classifier.
-# Decided that will be used for the SVM classifier that was trained on the original dataset after analysing the results.
+# Producing the Y_test.csv file which is used to evaluate the final performance of the classifier (SVM classifier).
 
 # X_test = df['X_test']
 # y_test = svc_cf.predict(X_test)
