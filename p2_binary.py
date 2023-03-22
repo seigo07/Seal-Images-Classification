@@ -117,6 +117,6 @@ print(cr_under)
 
 # Producing the Y_test.csv file which is used to evaluate the final performance of the classifier (SVM classifier).
 
-# X_test = df['X_test']
-# y_test = svc_cf.predict(X_test)
-# np.savetxt("output/Y_test.csv", y_test, fmt="%s")
+X_test = df['X_test']
+y_test = svc.predict(X_test)
+np.savetxt("output/Y_test.csv", y_test, fmt="%s")
