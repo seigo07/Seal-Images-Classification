@@ -69,83 +69,83 @@ print(cr_under)
 
 # 5. Selecting and training a classification model,
 
-# rf_cf = rf_cross_validate_pca(X_train, y_train, scorer=scorer)
-#
-# # Making predictions on the validation set with RF by using the RF classifier
-# # to make predictions on the validation set to allow us to evaluate its performance.
-#
-# y_pred = rf_cf.predict(X_test)
-#
-# # The confusion matrix for RF which will tell us how each class was misclassified.
-#
-# cm = confusion_matrix(y_test, y_pred)
-# sns.heatmap(cm / np.sum(cm), annot=True, fmt='.2%', cmap='Blues')
-#
-# # The classification report for RF which will give us detailed evaluation metrics.
-#
-# cr = classification_report(y_test, y_pred)
-# print(cr)
-#
-# print('Balanced accuracy: ', balanced_accuracy_score(y_test, y_pred))
-#
-# # Training RF with undersampled dataset using the undersampled dataset.
-#
-# rf_cf_under = rf_cross_validate_pca(X_train_under, y_train_under, scorer=scorer)
-#
-# # Making prediction on evaluation set with RF using the RF classifier trained using the undersampled dataset
-# # to make predictions on the validation set to allow us to evaluate its performance.
-#
-# y_pred_under = rf_cf_under.predict(X_test)
-#
-# # The confusion matrix for RF which will tell us how each class was misclassified.
-#
-# cf_under = confusion_matrix(y_test, y_pred_under)
-# sns.heatmap(cf_under / np.sum(cf_under), annot=True, fmt='.2%', cmap='Blues')
-#
-# # The classification report for RF which will give us detailed evaluation metrics.
-#
-# cr_under = classification_report(y_test, y_pred_under)
-# print(cr_under)
-#
-# # 6. Selecting and training another classification model
-#
-# svc_cf = svc_cross_validate_pca(X_train, y_train, scorer=scorer)
-#
-# # Making predictions on the validation set with SVC using the SVC classifier
-# # to make predictions on the validation set to allow  us to evaluate its performance.
-#
-# y_pred = svc_cf.predict(X_test)
-#
-# # The confusion matrix for SVC which will tell us how each class was misclassified.
-#
-# cm = confusion_matrix(y_test, y_pred)
-# sns.heatmap(cm / np.sum(cm), annot=True, fmt='.2%', cmap='Blues')
-# cr = classification_report(y_test, y_pred)
-# print(cr)
-# print('Balanced accuracy: ', balanced_accuracy_score(y_test, y_pred))
-#
-# # Training SVC with undersampled dataset
-#
-# svc_cf_under = svc_cross_validate_pca(X_train_under, y_train_under, scorer=scorer)
-#
-# # Making prediction on evaluation set with SVC under using the SVC classifier trained using the undersampled dataset
-# # to make predictions on the validation set to allow  us to evaluate its performance.
-#
-# y_pred_under = svc_cf_under.predict(X_test)
-#
-# # The confusion matrix for SVC which will tell us how each class was misclassified.
-#
-# cf_under = confusion_matrix(y_test, y_pred_under)
-# sns.heatmap(cf_under / np.sum(cf_under), annot=True, fmt='.2%', cmap='Blues')
-#
-# # The classification report for SVC which will give us detailed evaluation metrics.
-#
-# cr_under = classification_report(y_test, y_pred_under)
-# print(cr_under)
-#
-# # Producing the Y_test.csv file which is the file that will be used to evaluate the final performance of the classifier.
-# # Decided that will be used for the SVM classifier that was trained on the original dataset after analysing the results.
-#
-# # X_test = df['X_test']
-# # y_test = svc_cf.predict(X_test)
-# # np.savetxt("output/Y_test.csv", y_test, fmt="%s")
+rf_cf = rf_cross_validate_pca(X_train, y_train, scorer=scorer)
+
+# Making predictions on the validation set with RF by using the RF classifier
+# to make predictions on the validation set to allow us to evaluate its performance.
+
+y_pred = rf_cf.predict(X_test)
+
+# The confusion matrix for RF which will tell us how each class was misclassified.
+
+cm = confusion_matrix(y_test, y_pred)
+sns.heatmap(cm / np.sum(cm), annot=True, fmt='.2%', cmap='Blues')
+
+# The classification report for RF which will give us detailed evaluation metrics.
+
+cr = classification_report(y_test, y_pred)
+print(cr)
+
+print('Balanced accuracy: ', balanced_accuracy_score(y_test, y_pred))
+
+# Training RF with undersampled dataset using the undersampled dataset.
+
+rf_cf_under = rf_cross_validate_pca(X_train_under, y_train_under, scorer=scorer)
+
+# Making prediction on evaluation set with RF using the RF classifier trained using the undersampled dataset
+# to make predictions on the validation set to allow us to evaluate its performance.
+
+y_pred_under = rf_cf_under.predict(X_test)
+
+# The confusion matrix for RF which will tell us how each class was misclassified.
+
+cf_under = confusion_matrix(y_test, y_pred_under)
+sns.heatmap(cf_under / np.sum(cf_under), annot=True, fmt='.2%', cmap='Blues')
+
+# The classification report for RF which will give us detailed evaluation metrics.
+
+cr_under = classification_report(y_test, y_pred_under)
+print(cr_under)
+
+# 6. Selecting and training another classification model
+
+svc_cf = svc_cross_validate_pca(X_train, y_train, scorer=scorer)
+
+# Making predictions on the validation set with SVC using the SVC classifier
+# to make predictions on the validation set to allow  us to evaluate its performance.
+
+y_pred = svc_cf.predict(X_test)
+
+# The confusion matrix for SVC which will tell us how each class was misclassified.
+
+cm = confusion_matrix(y_test, y_pred)
+sns.heatmap(cm / np.sum(cm), annot=True, fmt='.2%', cmap='Blues')
+cr = classification_report(y_test, y_pred)
+print(cr)
+print('Balanced accuracy: ', balanced_accuracy_score(y_test, y_pred))
+
+# Training SVC with undersampled dataset
+
+svc_cf_under = svc_cross_validate_pca(X_train_under, y_train_under, scorer=scorer)
+
+# Making prediction on evaluation set with SVC under using the SVC classifier trained using the undersampled dataset
+# to make predictions on the validation set to allow  us to evaluate its performance.
+
+y_pred_under = svc_cf_under.predict(X_test)
+
+# The confusion matrix for SVC which will tell us how each class was misclassified.
+
+cf_under = confusion_matrix(y_test, y_pred_under)
+sns.heatmap(cf_under / np.sum(cf_under), annot=True, fmt='.2%', cmap='Blues')
+
+# The classification report for SVC which will give us detailed evaluation metrics.
+
+cr_under = classification_report(y_test, y_pred_under)
+print(cr_under)
+
+# Producing the Y_test.csv file which is the file that will be used to evaluate the final performance of the classifier.
+# Decided that will be used for the SVM classifier that was trained on the original dataset after analysing the results.
+
+# X_test = df['X_test']
+# y_test = svc_cf.predict(X_test)
+# np.savetxt("output/Y_test.csv", y_test, fmt="%s")

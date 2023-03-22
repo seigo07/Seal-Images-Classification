@@ -166,7 +166,7 @@ def svc_cross_validate_pca(X_train, y_train, scorer):
     print("Best cross-val balanced accuracy score: " + str(round(balanced_acc_score, 2)) + '%')
     print("Best cross-val accuracy score: " + str(round(acc_score, 2)) + '%')
 
-    cv_results = pd.DataFrame(cf.cv_results_)
+    # cv_results = pd.DataFrame(cf.cv_results_)
     # display(cv_results)
 
     print('\n')
