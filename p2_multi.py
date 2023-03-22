@@ -1,4 +1,3 @@
-from p2_binary import svc
 from p2_multi_functions import *
 from sklearn.model_selection import train_test_split
 from imblearn.under_sampling import RandomUnderSampler
@@ -51,8 +50,6 @@ y_train_under = y_train_under.to_numpy().ravel()
 
 scorer = ['balanced_accuracy', 'accuracy']
 
-# 5. Selecting and training a classification model,
-
 knn_cf = kn_cross_validate_pca(X_train, y_train, scorer)
 
 # Making predictions on the validation set and evaluate the classifier's performance.
@@ -90,7 +87,7 @@ sns.heatmap(cf_under / np.sum(cf_under), annot=True, fmt='.2%', cmap='Blues')
 cr_under = classification_report(y_val, y_pred_under)
 print(cr_under)
 
-# 6. Selecting and training another classification model
+# 5. Selecting and training a classification model,
 
 rf_cf = rf_cross_validate_pca(X_train, y_train, scorer)
 
@@ -130,6 +127,8 @@ sns.heatmap(cf_under / np.sum(cf_under), annot=True, fmt='.2%', cmap='Blues')
 cr_under = classification_report(y_val, y_pred_under)
 print(cr_under)
 
+# 6. Selecting and training another classification model
+
 svc_cf = svc_cross_validate_pca(X_train, y_train, scorer)
 
 # Making predictions on the validation set with SVC using the SVC classifier
@@ -167,5 +166,7 @@ print(cr_under)
 # Producing the Y_test.csv file which is the file that will be used to evaluate the final performance of the classifier.
 # Decided that will be used for the SVM classifier that was trained on the original dataset after analysing the results.
 
-y_test = svc.predict(df['X_test'])
-np.savetxt("output/multi/Y_test.csv", y_test, fmt="%s")
+X_test = df['X_test']
+y_test = svc_cf.predict(X_test)
+print(len(y_test))
+# np.savetxt("output/Y_test.csv", y_test, fmt="%s")
