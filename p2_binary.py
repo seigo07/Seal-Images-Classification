@@ -41,50 +41,35 @@ y_test = y_test.to_numpy().ravel()
 X_train_under = X_train_under.to_numpy()
 y_train_under = y_train_under.to_numpy().ravel()
 
-# Defining the scoring metrics for cross-validation.
+# Using cross-validation and predicting the performance of the classifier.
 
-scores = ['balanced_accuracy', 'accuracy']
-
-knn_cf = kn_cross_validate_pca(X_train, y_train, scores)
-
-# Making predictions on the validation set and evaluate the classifier's performance.
-
+scorer = ['balanced_accuracy', 'accuracy']
+knn_cf = kn_cross_validate_pca(X_train, y_train, scorer)
 y_pred = knn_cf.predict(X_test)
 
-# The confusion matrix for KNN which will tell us how each class was misclassified.
+# Evaluating the mis-classification of each class the confusion matrix and the classification report.
 
-cf = confusion_matrix(y_test, y_pred)
-sns.heatmap(cf / np.sum(cf), annot=True, fmt='.2%', cmap='Blues')
-
-# The classification report for KNN which will give us detailed evaluation metrics.
-
+cm = confusion_matrix(y_test, y_pred)
+sns.heatmap(cm / np.sum(cm), annot=True, fmt='.2%', cmap='Blues')
 cr = classification_report(y_test, y_pred)
+print("classification_report: ")
 print(cr)
+print('Balanced accuracy: ')
+print(balanced_accuracy_score(y_test, y_pred))
 
-print('Balanced accuracy: ', balanced_accuracy_score(y_test, y_pred))
+# Training and evaluating KNN with under-sampled data.
 
-# Training KNN with undersampled dataset.
-
-knn_cf_under = kn_cross_validate_pca(X_train_under, y_train_under, scorer=scores)
-
-# Making predictions on evaluation set with KNN trained on the undersampled dataset
-# by Using the KNN classifier trained using the undersampled dataset.
-
+knn_cf_under = kn_cross_validate_pca(X_train_under, y_train_under, scorer=scorer)
 y_pred_under = knn_cf_under.predict(X_test)
-
-# The confusion matrix which will tell us how each class was misclassified.
-
 cf_under = confusion_matrix(y_test, y_pred_under)
 sns.heatmap(cf_under / np.sum(cf_under), annot=True, fmt='.2%', cmap='Blues')
-
-# The classification report for KNN which will give us detailed evaluation metrics.
-
 cr_under = classification_report(y_test, y_pred_under)
+print("classification_report: ")
 print(cr_under)
 
 # 5. Selecting and training a classification model,
 
-rf_cf = rf_cross_validate_pca(X_train, y_train, scorer=scores)
+rf_cf = rf_cross_validate_pca(X_train, y_train, scorer=scorer)
 
 # Making predictions on the validation set with RF by using the RF classifier
 # to make predictions on the validation set to allow us to evaluate its performance.
@@ -93,8 +78,8 @@ y_pred = rf_cf.predict(X_test)
 
 # The confusion matrix for RF which will tell us how each class was misclassified.
 
-cf = confusion_matrix(y_test, y_pred)
-sns.heatmap(cf / np.sum(cf), annot=True, fmt='.2%', cmap='Blues')
+cm = confusion_matrix(y_test, y_pred)
+sns.heatmap(cm / np.sum(cm), annot=True, fmt='.2%', cmap='Blues')
 
 # The classification report for RF which will give us detailed evaluation metrics.
 
@@ -105,7 +90,7 @@ print('Balanced accuracy: ', balanced_accuracy_score(y_test, y_pred))
 
 # Training RF with undersampled dataset using the undersampled dataset.
 
-rf_cf_under = rf_cross_validate_pca(X_train_under, y_train_under, scorer=scores)
+rf_cf_under = rf_cross_validate_pca(X_train_under, y_train_under, scorer=scorer)
 
 # Making prediction on evaluation set with RF using the RF classifier trained using the undersampled dataset
 # to make predictions on the validation set to allow us to evaluate its performance.
@@ -124,7 +109,7 @@ print(cr_under)
 
 # 6. Selecting and training another classification model
 
-svc_cf = svc_cross_validate_pca(X_train, y_train, scorer=scores)
+svc_cf = svc_cross_validate_pca(X_train, y_train, scorer=scorer)
 
 # Making predictions on the validation set with SVC using the SVC classifier
 # to make predictions on the validation set to allow  us to evaluate its performance.
@@ -133,15 +118,15 @@ y_pred = svc_cf.predict(X_test)
 
 # The confusion matrix for SVC which will tell us how each class was misclassified.
 
-cf = confusion_matrix(y_test, y_pred)
-sns.heatmap(cf / np.sum(cf), annot=True, fmt='.2%', cmap='Blues')
+cm = confusion_matrix(y_test, y_pred)
+sns.heatmap(cm / np.sum(cm), annot=True, fmt='.2%', cmap='Blues')
 cr = classification_report(y_test, y_pred)
 print(cr)
 print('Balanced accuracy: ', balanced_accuracy_score(y_test, y_pred))
 
 # Training SVC with undersampled dataset
 
-svc_cf_under = svc_cross_validate_pca(X_train_under, y_train_under, scorer=scores)
+svc_cf_under = svc_cross_validate_pca(X_train_under, y_train_under, scorer=scorer)
 
 # Making prediction on evaluation set with SVC under using the SVC classifier trained using the undersampled dataset
 # to make predictions on the validation set to allow  us to evaluate its performance.
