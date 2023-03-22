@@ -41,11 +41,11 @@ y_test = y_test.to_numpy().ravel()
 X_train_under = X_train_under.to_numpy()
 y_train_under = y_train_under.to_numpy().ravel()
 
-# Using cross-validation and predicting the performance of the KNeighborsClassifier.
+# Using cross-validation and predicting the performance of KNeighborsClassifier.
 
 scorer = ['balanced_accuracy', 'accuracy']
-knn_cf = kn_cross_validation(X_train, y_train, scorer)
-y_pred = knn_cf.predict(X_test)
+kn = kn_cross_validation(X_train, y_train, scorer)
+y_pred = kn.predict(X_test)
 
 # Evaluating the mis-classification of each class the confusion matrix and the classification report.
 
@@ -59,8 +59,8 @@ print(balanced_accuracy_score(y_test, y_pred))
 
 # Training and evaluating KNN with under-sampled data.
 
-knn_cf_under = kn_cross_validation(X_train_under, y_train_under, scorer=scorer)
-y_pred_under = knn_cf_under.predict(X_test)
+kn_under = kn_cross_validation(X_train_under, y_train_under, scorer=scorer)
+y_pred_under = kn_under.predict(X_test)
 cf_under = confusion_matrix(y_test, y_pred_under)
 sns.heatmap(cf_under / np.sum(cf_under), annot=True, fmt='.2%', cmap='Blues')
 cr_under = classification_report(y_test, y_pred_under)
@@ -69,41 +69,25 @@ print(cr_under)
 
 # 5. Selecting and training a classification model,
 
-rf_cf = rf_cross_validate_pca(X_train, y_train, scorer=scorer)
+# Using cross-validation and predicting the performance of Random Forest.
 
-# Making predictions on the validation set with RF by using the RF classifier
-# to make predictions on the validation set to allow us to evaluate its performance.
-
-y_pred = rf_cf.predict(X_test)
-
-# The confusion matrix for RF which will tell us how each class was misclassified.
-
+rf = rf_cross_validation(X_train, y_train, scorer=scorer)
+y_pred = rf.predict(X_test)
 cm = confusion_matrix(y_test, y_pred)
 sns.heatmap(cm / np.sum(cm), annot=True, fmt='.2%', cmap='Blues')
 
-# The classification report for RF which will give us detailed evaluation metrics.
+# Evaluating the mis-classification of each class the confusion matrix and the classification report.
 
 cr = classification_report(y_test, y_pred)
 print(cr)
-
 print('Balanced accuracy: ', balanced_accuracy_score(y_test, y_pred))
 
-# Training RF with undersampled dataset using the undersampled dataset.
+# Training and evaluating RF with under-sampled data.
 
-rf_cf_under = rf_cross_validate_pca(X_train_under, y_train_under, scorer=scorer)
-
-# Making prediction on evaluation set with RF using the RF classifier trained using the undersampled dataset
-# to make predictions on the validation set to allow us to evaluate its performance.
-
-y_pred_under = rf_cf_under.predict(X_test)
-
-# The confusion matrix for RF which will tell us how each class was misclassified.
-
+rf_under = rf_cross_validation(X_train_under, y_train_under, scorer=scorer)
+y_pred_under = rf_under.predict(X_test)
 cf_under = confusion_matrix(y_test, y_pred_under)
 sns.heatmap(cf_under / np.sum(cf_under), annot=True, fmt='.2%', cmap='Blues')
-
-# The classification report for RF which will give us detailed evaluation metrics.
-
 cr_under = classification_report(y_test, y_pred_under)
 print(cr_under)
 
