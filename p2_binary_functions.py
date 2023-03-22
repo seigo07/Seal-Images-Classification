@@ -32,12 +32,12 @@ def load_data():
 
 
 # Cleaning the data by removing the features taken from a random normal distribution
-def clean_data(data_dict):
+def clean_data(df):
     print('Cleaning data...')
     df = {
-        'X_train': data_dict['X_train'].drop(data_dict['X_train'].columns[900:916], axis=1),
-        'X_test': data_dict['X_test'].drop(data_dict['X_test'].columns[900:916], axis=1),
-        'y_train': data_dict['y_train']
+        'X_train': df['X_train'].drop(df['X_train'].columns[900:916], axis=1),
+        'X_test': df['X_test'].drop(df['X_test'].columns[900:916], axis=1),
+        'y_train': df['y_train']
     }
     print('X train after cleaning:')
     df['X_train'].info()
