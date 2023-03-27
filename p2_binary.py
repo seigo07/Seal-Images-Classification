@@ -1,15 +1,13 @@
-from p2_binary_functions import *
+from p2_functions import *
 from sklearn.model_selection import train_test_split
 from imblearn.under_sampling import RandomUnderSampler
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
 import numpy as np
-from sklearn.metrics import classification_report
-from sklearn.metrics import balanced_accuracy_score
 
 # 1. Loading the data
 
-df = load_data()
+df = load_data("binary")
 
 # 2. Cleaning the data and creating new input features from the given dataset
 
@@ -23,8 +21,8 @@ plot_target_frequency(df)
 
 # Splitting the training dataset to get a mock test dataset for the X_test.csv
 
-X_train, X_test, y_train, y_test = train_test_split(df['X_train'], df['y_train'], test_size=0.2,
-                                                    random_state=23, shuffle=True, stratify=df['y_train'])
+X_train, X_test, y_train, y_test = train_test_split(df['X_train'], df['y_train'],
+                                                    random_state=RANDOM_STATE, shuffle=True, stratify=df['y_train'])
 
 # Under-sampling to deal with imbalanced data.
 
@@ -53,11 +51,7 @@ y_pred = kn.predict(X_test)
 
 cm = confusion_matrix(y_test, y_pred)
 sns.heatmap(cm / np.sum(cm), annot=True, fmt='.2%', cmap='Blues')
-cr = classification_report(y_test, y_pred)
-print("classification_report: ")
-print(cr)
-print('Balanced accuracy: ')
-print(balanced_accuracy_score(y_test, y_pred))
+printResult(y_test, y_pred)
 
 # Training and evaluating KNN with under-sampled data.
 
@@ -65,9 +59,7 @@ kn_under = kn_cross_validation(X_train_under, y_train_under, scorer=scorer)
 y_pred_under = kn_under.predict(X_test)
 cf_under = confusion_matrix(y_test, y_pred_under)
 sns.heatmap(cf_under / np.sum(cf_under), annot=True, fmt='.2%', cmap='Blues')
-cr_under = classification_report(y_test, y_pred_under)
-print("classification_report: ")
-print(cr_under)
+printResult(y_test, y_pred_under)
 
 # 6. Selecting and training another classification model
 
@@ -80,9 +72,7 @@ sns.heatmap(cm / np.sum(cm), annot=True, fmt='.2%', cmap='Blues')
 
 # Evaluating the mis-classification of each class the confusion matrix and the classification report.
 
-cr = classification_report(y_test, y_pred)
-print(cr)
-print('Balanced accuracy: ', balanced_accuracy_score(y_test, y_pred))
+printResult(y_test, y_pred)
 
 # Training and evaluating RF with under-sampled data.
 
@@ -90,8 +80,7 @@ rf_under = rf_cross_validation(X_train_under, y_train_under, scorer=scorer)
 y_pred_under = rf_under.predict(X_test)
 cf_under = confusion_matrix(y_test, y_pred_under)
 sns.heatmap(cf_under / np.sum(cf_under), annot=True, fmt='.2%', cmap='Blues')
-cr_under = classification_report(y_test, y_pred_under)
-print(cr_under)
+printResult(y_test, y_pred_under)
 
 # Using cross-validation and predicting the performance of LinearSVC.
 
@@ -102,9 +91,7 @@ y_pred = svc.predict(X_test)
 
 cm = confusion_matrix(y_test, y_pred)
 sns.heatmap(cm / np.sum(cm), annot=True, fmt='.2%', cmap='Blues')
-cr = classification_report(y_test, y_pred)
-print(cr)
-print('Balanced accuracy: ', balanced_accuracy_score(y_test, y_pred))
+printResult(y_test, y_pred)
 
 # Training and evaluating SVC with under-sampled data.
 
@@ -112,10 +99,10 @@ svc_under = svc_cross_validation(X_train_under, y_train_under, scorer=scorer)
 y_pred_under = svc_under.predict(X_test)
 cf_under = confusion_matrix(y_test, y_pred_under)
 sns.heatmap(cf_under / np.sum(cf_under), annot=True, fmt='.2%', cmap='Blues')
-cr_under = classification_report(y_test, y_pred_under)
-print(cr_under)
+printResult(y_test, y_pred_under)
 
 # Producing the Y_test.csv file which is used to evaluate the final performance of the classifier (SVM classifier).
 
-y_test = svc.predict(df['X_test'])
-np.savetxt("output/binary/Y_test.csv", y_test, fmt="%s")
+outputCSV(kn.predict(df['X_test']), "binary", "kn")
+outputCSV(rf.predict(df['X_test']), "binary", "rf")
+outputCSV(svc.predict(df['X_test']), "binary", "svc")
