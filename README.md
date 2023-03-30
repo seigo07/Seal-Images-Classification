@@ -4,7 +4,7 @@ Seal Images Classification.
 
 ## Description
 
-This is a classification sample application by logistic regression.
+This is a binary and multi-class classification of seal images with real experimental, imperfect, and limited data which has not been analysed before.
 
 ## Getting Started
 
